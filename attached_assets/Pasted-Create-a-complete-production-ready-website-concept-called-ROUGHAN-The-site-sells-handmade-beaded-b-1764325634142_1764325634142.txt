@@ -1,0 +1,68 @@
+Create a complete, production-ready website concept called ROUGHAN.
+The site sells handmade beaded brooches and allows users to generate custom brooch designs using the OpenAI API.
+
+Design Requirements
+• Style: contemporary art museum website.
+• Palette: black and white only.
+• Typography: modernist, geometric, sharp.
+• Layout: strict angles, clean grid, high contrast, large whitespace.
+• Overall mood: minimalistic, premium, gallery-like.
+
+Content Structure
+
+Homepage
+• Logo “ROUGHAN” in modernist typography.
+• Grid of available brooches with photo + price (80–100 EUR).
+• “Create Your Brooch” CTA leading to the generator.
+
+Product Page: Ready Brooches
+• Photo (large, sharp).
+• Price.
+• “Order via Email” button.
+• When clicked:
+– Opens email template.
+– Auto-inserts product photo.
+– Auto-fills base text asking to confirm purchase and shipping details.
+
+Custom Brooch Generator
+• User clicks “Create a Brooch”.
+• Redirect to settings panel:
+– Size: S / M / L / XL
+– Shape: predefined silhouettes (insects, animals, abstract forms, etc.)
+– Colors: choose one or several primary colors
+– Description field: user writes creative wishes for the brooch
+• “Generate Layout” button
+– Sends all chosen parameters + description to OpenAI API
+– Output: photorealistic image of the future brooch
+
+Order Custom Brooch
+• “Order this Brooch” button
+• Opens email client
+• Attaches the generated image
+• Inserts template text requesting confirmation and time for production
+• User is told to wait for a response
+
+Language Support
+• Full EN / DE switch
+• All text, buttons, forms duplicated for both languages
+
+Shipping
+• Worldwide shipping label shown globally on every page
+• Transparent info page with shipping/returns
+
+Technical Requirements
+• Works with OpenAI API for image generation
+• Email templates autoload with attached images
+• Fully responsive, minimalistic, high-contrast
+• Code structure clean and modular
+• All pages bilingual
+
+Output Required
+Generate:
+• Full website wireframe
+• Component list
+• UI layout
+• Style guide (TYPO, spacing, grid)
+• Functional logic of the generator
+• Image prompts for OpenAI
+• Example email templates (EN + DE)
