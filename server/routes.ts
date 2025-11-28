@@ -93,7 +93,7 @@ The beads should be clearly visible, showing the texture and craftsmanship of ha
         response_format: "b64_json",
       });
 
-      const b64Data = response.data[0].b64_json;
+      const b64Data = response.data?.[0]?.b64_json;
 
       if (!b64Data) {
         throw new Error("No image data returned from OpenAI");
