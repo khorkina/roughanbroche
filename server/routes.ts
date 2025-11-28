@@ -51,11 +51,17 @@ export async function registerRoutes(
 
       const { size, shape, colors, description } = validationResult.data;
 
-      // Build color names for the prompt
-      const colorNames = colors
-        .map((id) => {
-          const color = colorOptions.find((c) => c.id === id);
-          return color ? color.name.toLowerCase() : id;
+      // Build color descriptions for the prompt
+      // Supports both hex values (from color palette) and color IDs (legacy)
+      const colorDescriptions = colors
+        .map((color) => {
+          // Check if it's a hex value
+          if (color.startsWith("#")) {
+            return `color ${color}`;
+          }
+          // Check if it's a known color ID
+          const knownColor = colorOptions.find((c) => c.id === color);
+          return knownColor ? knownColor.name.toLowerCase() : color;
         })
         .join(", ");
 
@@ -70,7 +76,7 @@ export async function registerRoutes(
       // Create the DALL-E prompt
       const prompt = `Photorealistic image of a handmade beaded brooch in the shape of a ${shape}. 
 Size: ${sizeDesc}. 
-Primary colors: ${colorNames}. 
+Primary colors: ${colorDescriptions}. 
 Style: ${description}. 
 The brooch is made of tiny glass beads, intricate beadwork, artisanal craftsmanship. 
 Professional jewelry photography, white background, sharp focus, high detail, luxury product photography.

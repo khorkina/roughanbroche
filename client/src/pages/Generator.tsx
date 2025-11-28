@@ -7,15 +7,15 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import ColorPalette, { colorPalettes } from "@/components/ColorPalette";
 import { 
   sizeOptions, 
   shapeCategories, 
-  colorOptions, 
   type Size,
   type ShapeCategory,
   type GeneratedBrooch 
 } from "@shared/schema";
-import { Sparkles, Mail, RefreshCw, Check } from "lucide-react";
+import { Sparkles, Mail, RefreshCw } from "lucide-react";
 
 export default function Generator() {
   const { language, t } = useLanguage();
@@ -49,16 +49,20 @@ export default function Generator() {
     },
   });
 
-  const handleColorToggle = (colorId: string) => {
+  const handleColorToggle = (hex: string) => {
     setSelectedColors((prev) => {
-      if (prev.includes(colorId)) {
-        return prev.filter((c) => c !== colorId);
+      if (prev.includes(hex)) {
+        return prev.filter((c) => c !== hex);
       }
       if (prev.length >= 4) {
         return prev;
       }
-      return [...prev, colorId];
+      return [...prev, hex];
     });
+  };
+
+  const handlePaletteSelect = (colors: string[]) => {
+    setSelectedColors(colors.slice(0, 4));
   };
 
   const handleGenerate = () => {
@@ -89,25 +93,21 @@ export default function Generator() {
   const handleOrderEmail = () => {
     if (!generatedBrooch) return;
 
-    const colorNames = selectedColors
-      .map((id) => {
-        const color = colorOptions.find((c) => c.id === id);
-        return color ? (language === "de" ? color.nameDE : color.name) : id;
-      })
-      .join(", ");
+    const colorDisplay = selectedColors.join(", ");
+    const imageUrl = `${window.location.origin}/api/generated/${generatedBrooch.id}/image`;
 
     const subject = encodeURIComponent(t("generator.emailSubject"));
     const body = encodeURIComponent(
       formatTemplate(t("generator.emailBody"), {
         size,
         shape: t(`shape.${shape}`),
-        colors: colorNames,
+        colors: colorDisplay,
         description,
-        imageUrl: generatedBrooch.imageUrl,
+        imageUrl,
       })
     );
 
-    window.location.href = `mailto:custom@roughan.art?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:roughanbrooch@gmail.com?subject=${subject}&body=${body}`;
   };
 
   const handleNewDesign = () => {
@@ -157,18 +157,15 @@ export default function Generator() {
                   {t("generator.colors")}
                 </p>
                 <div className="flex gap-2 flex-wrap">
-                  {selectedColors.map((colorId) => {
-                    const color = colorOptions.find((c) => c.id === colorId);
-                    return (
-                      <div
-                        key={colorId}
-                        className="w-8 h-8 border border-foreground"
-                        style={{ backgroundColor: color?.hex }}
-                        title={color ? (language === "de" ? color.nameDE : color.name) : colorId}
-                        data-testid={`color-result-${colorId}`}
-                      />
-                    );
-                  })}
+                  {selectedColors.map((hex, idx) => (
+                    <div
+                      key={idx}
+                      className="w-8 h-8 border border-foreground"
+                      style={{ backgroundColor: hex }}
+                      title={hex}
+                      data-testid={`color-result-${idx}`}
+                    />
+                  ))}
                 </div>
               </div>
 
@@ -298,41 +295,15 @@ export default function Generator() {
                 {t("generator.colors")}
               </Label>
               <p className="text-sm opacity-60 mb-4">
-                {t("generator.colorsDesc")}
+                {language === "de" 
+                  ? "Wählen Sie eine Farbpalette oder klicken Sie auf Farben zum Anpassen" 
+                  : "Select a color palette or click colors to customize"}
               </p>
-              <div className="grid grid-cols-5 sm:grid-cols-10 gap-3">
-                {colorOptions.map((color) => (
-                  <button
-                    key={color.id}
-                    onClick={() => handleColorToggle(color.id)}
-                    className={`relative aspect-square border-2 transition-all hover-elevate ${
-                      selectedColors.includes(color.id)
-                        ? "border-foreground scale-110"
-                        : "border-transparent"
-                    }`}
-                    style={{ backgroundColor: color.hex }}
-                    title={language === "de" ? color.nameDE : color.name}
-                    data-testid={`button-color-${color.id}`}
-                  >
-                    {selectedColors.includes(color.id) && (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <Check 
-                          className={`w-5 h-5 ${
-                            color.id === "white" || color.id === "silver" || color.id === "gold"
-                              ? "text-black"
-                              : "text-white"
-                          }`}
-                        />
-                      </div>
-                    )}
-                  </button>
-                ))}
-              </div>
-              {selectedColors.length > 0 && (
-                <p className="text-sm opacity-60 mt-3">
-                  {selectedColors.length}/4 {language === "de" ? "ausgewählt" : "selected"}
-                </p>
-              )}
+              <ColorPalette
+                selectedColors={selectedColors}
+                onColorToggle={handleColorToggle}
+                onPaletteSelect={handlePaletteSelect}
+              />
             </div>
 
             <div>
