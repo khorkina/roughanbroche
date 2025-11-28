@@ -84,13 +84,17 @@ The beads should be clearly visible, showing the texture and craftsmanship of ha
         n: 1,
         size: "1024x1024",
         quality: "standard",
+        response_format: "b64_json",
       });
 
-      const imageUrl = response.data[0].url;
+      const b64Data = response.data[0].b64_json;
 
-      if (!imageUrl) {
-        throw new Error("No image URL returned from OpenAI");
+      if (!b64Data) {
+        throw new Error("No image data returned from OpenAI");
       }
+
+      // Convert base64 to data URL for direct display
+      const imageUrl = `data:image/png;base64,${b64Data}`;
 
       // Save the generated brooch
       const generatedBrooch = await storage.saveGeneratedBrooch({
