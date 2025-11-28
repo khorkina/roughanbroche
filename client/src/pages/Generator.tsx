@@ -29,13 +29,13 @@ export default function Generator() {
 
   const generateMutation = useMutation({
     mutationFn: async () => {
-      const response = await apiRequest<GeneratedBrooch>("POST", "/api/generate", {
+      const response = await apiRequest("POST", "/api/generate", {
         size,
         shape,
         colors: selectedColors,
         description,
       });
-      return response;
+      return response.json() as Promise<GeneratedBrooch>;
     },
     onSuccess: (data) => {
       setGeneratedBrooch(data);
