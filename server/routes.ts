@@ -134,5 +134,26 @@ The beads should be clearly visible, showing the texture and craftsmanship of ha
     }
   });
 
+  // Serve generated brooch image directly
+  app.get("/api/generated/:id/image", async (req, res) => {
+    try {
+      const brooch = await storage.getGeneratedBrooch(req.params.id);
+      if (!brooch) {
+        return res.status(404).json({ error: "Generated brooch not found" });
+      }
+      
+      // Extract base64 data from data URI
+      const base64Data = brooch.imageUrl.replace(/^data:image\/png;base64,/, '');
+      const imageBuffer = Buffer.from(base64Data, 'base64');
+      
+      res.set('Content-Type', 'image/png');
+      res.set('Cache-Control', 'public, max-age=3600');
+      res.send(imageBuffer);
+    } catch (error) {
+      console.error("Error serving generated brooch image:", error);
+      res.status(500).json({ error: "Failed to serve image" });
+    }
+  });
+
   return httpServer;
 }

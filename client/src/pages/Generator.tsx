@@ -129,7 +129,7 @@ export default function Generator() {
         <div className="grid lg:grid-cols-2 min-h-[calc(100vh-300px)]">
           <div className="relative aspect-square lg:aspect-auto lg:h-full border-b lg:border-b-0 lg:border-r border-foreground bg-background">
             <img
-              src={generatedBrooch.imageUrl}
+              src={`/api/generated/${generatedBrooch.id}/image`}
               alt="Generated brooch design"
               className="w-full h-full object-contain p-8"
               data-testid="img-generated"
