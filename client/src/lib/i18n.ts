@@ -13,6 +13,7 @@ export const translations = {
     // Header
     "nav.collection": "Collection",
     "nav.create": "Create",
+    "nav.myBrooches": "My Brooches",
     "nav.shipping": "Shipping",
     "nav.worldwide": "Worldwide Shipping",
     
@@ -52,6 +53,8 @@ export const translations = {
     "generator.result": "Your Custom Brooch",
     "generator.order": "Order This Brooch",
     "generator.newDesign": "Create New Design",
+    "generator.remainingToday": "Generations remaining today",
+    "generator.limitReached": "Daily limit reached",
     "generator.emailSubject": "Custom Brooch Order",
     "generator.emailBody": "Hello,\n\nI would like to order the custom brooch design I created:\n\nSize: {size}\nShape: {shape}\nColors: {colors}\nDescription: {description}\n\nGenerated image URL: {imageUrl}\n\nPlease confirm the production timeline and provide shipping details to:\n\n[Your Name]\n[Your Address]\n[City, Postal Code]\n[Country]\n\nThank you!",
     
@@ -102,6 +105,16 @@ export const translations = {
     "footer.handmade": "Handmade with care",
     "footer.rights": "All rights reserved",
     
+    // My Brooches
+    "myBrooches.title": "My Brooches",
+    "myBrooches.subtitle": "Your saved generated brooch designs",
+    "myBrooches.empty": "You haven't generated any brooches yet",
+    "myBrooches.createFirst": "Create Your First Brooch",
+    "myBrooches.createNew": "Create New Brooch",
+    "myBrooches.delete": "Delete",
+    "myBrooches.remaining": "Generations remaining",
+    "myBrooches.today": "today",
+    
     // Common
     "common.loading": "Loading...",
     "common.error": "Something went wrong",
@@ -111,6 +124,7 @@ export const translations = {
     // Header
     "nav.collection": "Kollektion",
     "nav.create": "Gestalten",
+    "nav.myBrooches": "Meine Broschen",
     "nav.shipping": "Versand",
     "nav.worldwide": "Weltweiter Versand",
     
@@ -150,6 +164,8 @@ export const translations = {
     "generator.result": "Ihre individuelle Brosche",
     "generator.order": "Diese Brosche bestellen",
     "generator.newDesign": "Neues Design erstellen",
+    "generator.remainingToday": "Verbleibende Generierungen heute",
+    "generator.limitReached": "Tageslimit erreicht",
     "generator.emailSubject": "Individuelle Broschenbestellung",
     "generator.emailBody": "Hallo,\n\nIch möchte das individuelle Broschen-Design bestellen, das ich erstellt habe:\n\nGröße: {size}\nForm: {shape}\nFarben: {colors}\nBeschreibung: {description}\n\nURL des generierten Bildes: {imageUrl}\n\nBitte bestätigen Sie den Produktionszeitraum und senden Sie mir die Versanddetails an:\n\n[Ihr Name]\n[Ihre Adresse]\n[Stadt, PLZ]\n[Land]\n\nVielen Dank!",
     
@@ -199,6 +215,16 @@ export const translations = {
     // Footer
     "footer.handmade": "Mit Sorgfalt handgefertigt",
     "footer.rights": "Alle Rechte vorbehalten",
+    
+    // My Brooches
+    "myBrooches.title": "Meine Broschen",
+    "myBrooches.subtitle": "Ihre gespeicherten generierten Broschendesigns",
+    "myBrooches.empty": "Sie haben noch keine Broschen generiert",
+    "myBrooches.createFirst": "Erste Brosche erstellen",
+    "myBrooches.createNew": "Neue Brosche erstellen",
+    "myBrooches.delete": "Löschen",
+    "myBrooches.remaining": "Verbleibende Generierungen",
+    "myBrooches.today": "heute",
     
     // Common
     "common.loading": "Lädt...",

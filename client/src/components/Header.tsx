@@ -50,6 +50,16 @@ export function Header() {
               {t("nav.create")}
             </Button>
           </Link>
+
+          <Link href="/my-brooches">
+            <Button
+              variant="ghost"
+              className={`text-sm tracking-wider uppercase ${isActive("/my-brooches") ? "bg-foreground text-background" : ""}`}
+              data-testid="nav-my-brooches"
+            >
+              {t("nav.myBrooches")}
+            </Button>
+          </Link>
           
           <Link href="/shipping">
             <Button

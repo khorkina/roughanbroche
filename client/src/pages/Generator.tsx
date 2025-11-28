@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 import { apiRequest } from "@/lib/queryClient";
 import ColorPalette, { colorPalettes } from "@/components/ColorPalette";
 import { 
@@ -15,17 +16,20 @@ import {
   type ShapeCategory,
   type GeneratedBrooch 
 } from "@shared/schema";
-import { Sparkles, Mail, RefreshCw } from "lucide-react";
+import { Sparkles, Mail, RefreshCw, AlertTriangle } from "lucide-react";
 
 export default function Generator() {
   const { language, t } = useLanguage();
   const { toast } = useToast();
+  const { saveBrooch, canGenerate, getRemainingGenerations, incrementGenerationCount } = useLocalStorage();
   
   const [size, setSize] = useState<Size>("M");
   const [shape, setShape] = useState<string>("");
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [description, setDescription] = useState("");
   const [generatedBrooch, setGeneratedBrooch] = useState<GeneratedBrooch | null>(null);
+
+  const remainingGenerations = getRemainingGenerations();
 
   const generateMutation = useMutation({
     mutationFn: async () => {
@@ -39,6 +43,16 @@ export default function Generator() {
     },
     onSuccess: (data) => {
       setGeneratedBrooch(data);
+      incrementGenerationCount();
+      saveBrooch({
+        id: data.id,
+        imageUrl: data.imageUrl,
+        size: data.size,
+        shape: data.shape,
+        colors: data.colors,
+        description: data.description,
+        createdAt: data.createdAt,
+      });
     },
     onError: () => {
       toast({
@@ -66,6 +80,14 @@ export default function Generator() {
   };
 
   const handleGenerate = () => {
+    if (!canGenerate()) {
+      toast({
+        title: language === "de" ? "Tageslimit erreicht" : "Daily limit reached",
+        description: language === "de" ? "Sie können heute keine weiteren Designs erstellen" : "You cannot create more designs today",
+        variant: "destructive",
+      });
+      return;
+    }
     if (!shape) {
       toast({
         title: language === "de" ? "Bitte wählen Sie eine Form" : "Please select a shape",
@@ -219,6 +241,15 @@ export default function Generator() {
         <p className="max-w-xl mx-auto tracking-wide opacity-60">
           {t("generator.subtitle")}
         </p>
+        <p className="mt-4 text-sm tracking-wider">
+          {t("generator.remainingToday")}: <span className={`font-bold ${remainingGenerations === 0 ? "text-destructive" : ""}`}>{remainingGenerations}/3</span>
+        </p>
+        {remainingGenerations === 0 && (
+          <div className="mt-4 inline-flex items-center gap-2 text-destructive">
+            <AlertTriangle className="w-4 h-4" />
+            <span className="text-sm">{t("generator.limitReached")}</span>
+          </div>
+        )}
       </div>
 
       <div className="px-6 py-12 md:px-12 max-w-4xl mx-auto">
@@ -331,12 +362,12 @@ export default function Generator() {
               <Button
                 size="lg"
                 onClick={handleGenerate}
-                disabled={generateMutation.isPending}
+                disabled={generateMutation.isPending || !canGenerate()}
                 className="w-full py-6 text-sm tracking-widest uppercase"
                 data-testid="button-generate"
               >
                 <Sparkles className="mr-2 w-4 h-4" />
-                {t("generator.generate")}
+                {canGenerate() ? t("generator.generate") : t("generator.limitReached")}
               </Button>
             </div>
           </div>

@@ -10,6 +10,7 @@ import { Footer } from "@/components/Footer";
 import Home from "@/pages/Home";
 import Product from "@/pages/Product";
 import Generator from "@/pages/Generator";
+import MyBrooches from "@/pages/MyBrooches";
 import Shipping from "@/pages/Shipping";
 import NotFound from "@/pages/not-found";
 
@@ -19,6 +20,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/product/:id" component={Product} />
       <Route path="/create" component={Generator} />
+      <Route path="/my-brooches" component={MyBrooches} />
       <Route path="/shipping" component={Shipping} />
       <Route component={NotFound} />
     </Switch>
