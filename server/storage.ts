@@ -1,37 +1,47 @@
-import { type User, type InsertUser } from "@shared/schema";
+import { type Brooch, type GeneratedBrooch, sampleBrooches } from "@shared/schema";
 import { randomUUID } from "crypto";
 
-// modify the interface with any CRUD methods
-// you might need
-
 export interface IStorage {
-  getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  getAllBrooches(): Promise<Brooch[]>;
+  getBroochById(id: string): Promise<Brooch | undefined>;
+  saveGeneratedBrooch(brooch: Omit<GeneratedBrooch, "id" | "createdAt">): Promise<GeneratedBrooch>;
+  getGeneratedBrooch(id: string): Promise<GeneratedBrooch | undefined>;
 }
 
 export class MemStorage implements IStorage {
-  private users: Map<string, User>;
+  private brooches: Map<string, Brooch>;
+  private generatedBrooches: Map<string, GeneratedBrooch>;
 
   constructor() {
-    this.users = new Map();
+    this.brooches = new Map();
+    this.generatedBrooches = new Map();
+    
+    for (const brooch of sampleBrooches) {
+      this.brooches.set(brooch.id, brooch);
+    }
   }
 
-  async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+  async getAllBrooches(): Promise<Brooch[]> {
+    return Array.from(this.brooches.values());
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+  async getBroochById(id: string): Promise<Brooch | undefined> {
+    return this.brooches.get(id);
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
+  async saveGeneratedBrooch(brooch: Omit<GeneratedBrooch, "id" | "createdAt">): Promise<GeneratedBrooch> {
     const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+    const generatedBrooch: GeneratedBrooch = {
+      ...brooch,
+      id,
+      createdAt: new Date().toISOString(),
+    };
+    this.generatedBrooches.set(id, generatedBrooch);
+    return generatedBrooch;
+  }
+
+  async getGeneratedBrooch(id: string): Promise<GeneratedBrooch | undefined> {
+    return this.generatedBrooches.get(id);
   }
 }
 
